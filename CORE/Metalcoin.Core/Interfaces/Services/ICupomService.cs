@@ -1,15 +1,17 @@
-﻿namespace Metalcoin.Core.Interfaces.Services
+﻿using Metalcoin.Core.Domain;
+using Metalcoin.Core.Dtos.Request;
+using Metalcoin.Core.Dtos.Response;
+
+namespace Metalcoin.Core.Interfaces.Services
 {
-    public class ICupomService
+    public interface ICupomService
     {
-        public interface ICupomService
-        {
-            Task<CupomResponse> CadastrarCupom(CupomCadastrarRequest cupom);
-            Task<CupomResponse> AtualizarCupom(CupomAtualizarRequest cupom);
-            Task<bool> DeletarCupom(Guid id);
-            Task<bool> UtilizarCupom(string codigoCupom, Guid idUsuario);
-            // Adicione outros métodos de serviço conforme necessário
-        }
+        Task<CupomResponse> CadastrarCupom(CupomCadastrarRequest cupom);
+        Task<CupomResponse> AtualizarCupom(CupomAtualizarRequest cupom);
+        Task<bool> DeletarCupom(Guid id);
+        Task<bool> UtilizarCupom(string codigoCupom, Guid idUsuario);
+        Task CadastrarCupom(Cupom cupom);
     }
 }
-}
+
+
