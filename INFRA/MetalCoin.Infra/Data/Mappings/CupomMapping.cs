@@ -16,10 +16,10 @@ namespace MetalCoin.Infra.Data.Mappings
             builder.Property(p => p.Descricao).HasColumnType("varchar(255)");
             builder.Property(p => p.ValorDesconto).IsRequired().HasColumnType("decimal(10,2)");
             builder.Property(p => p.TipoDesconto).IsRequired();
-            builder.Property(p => p.DataValidade).IsRequired();
+            builder.Property(p => p.DataValidade).IsRequired().HasColumnType("datetime");
             builder.Property(p => p.QuantidadeLiberada).IsRequired();
             builder.Property(p => p.QuantidadeUsada).IsRequired();
-            builder.Property(p => p.Status).IsRequired();
+            builder.Property(p => p.TipoStatusCupom).IsRequired();
         }
     }
 }

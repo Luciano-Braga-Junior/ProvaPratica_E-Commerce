@@ -1,6 +1,4 @@
-﻿using Metalcoin.Core.Domain;
-using Metalcoin.Core.Dtos;
-using Metalcoin.Core.Dtos.Categorias;
+﻿using Metalcoin.Core.Dtos.Categorias;
 using Metalcoin.Core.Dtos.Request;
 using Metalcoin.Core.Interfaces.Repositories;
 using Metalcoin.Core.Interfaces.Services;

@@ -5,9 +5,8 @@ namespace Metalcoin.Core.Dtos.Request
 {
     public record CupomAtualizarRequest
     {
-        [Required(ErrorMessage = "O ID do cupom é obrigatório")]
+       
         public Guid Id { get; set; }
-
         [Required(ErrorMessage = "O código do cupom é obrigatório")]
         public string Codigo { get; set; }
 
@@ -28,8 +27,7 @@ namespace Metalcoin.Core.Dtos.Request
 
         [Required(ErrorMessage = "A quantidade usada é obrigatória")]
         public int QuantidadeUsada { get; set; }
-
         [Required(ErrorMessage = "O status do cupom é obrigatório")]
-        public TipoStatusCupom Status { get; set; }
+        public TipoStatusCupom TipoStatusCupom { get; set; }
     }
 }

@@ -2,9 +2,8 @@
 {
     public enum TipoStatusCupom
     {
-        Ativo,
-        Expirado,
-        Desativado,
-        TotalmenteUtilizado
+        Ativo = 1,
+        Expirado = 2,
+        Desativado = 0,
     }
 }

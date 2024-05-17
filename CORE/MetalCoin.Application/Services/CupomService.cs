@@ -8,34 +8,83 @@ namespace MetalCoin.Application.Services
 {
     public class CupomService : ICupomService
     {
-        Task<CupomResponse> ICupomService.AtualizarCupom(CupomAtualizarRequest cupomRequest)
+        private readonly ICupomRepository _cupomRepository;
+        public CupomService(ICupomRepository repository)
         {
-            throw new NotImplementedException();
+            _cupomRepository = repository;
         }
-
-        Task<CupomResponse> ICupomService.CadastrarCupom(CupomCadastrarRequest cupomRequest)
+        
+        public async Task<CupomResponse> CadastrarCupom(CupomCadastrarRequest cupom)
         {
-            throw new NotImplementedException();
+            var cupomExistente = await _cupomRepository.BuscarPorNome(cupom.Descricao);
+
+            if (cupomExistente != null) return null;
+
+            var cupomEntidade = new Cupom
+            {
+                Descricao = cupom.Descricao,
+                Codigo = cupom.Codigo,
+                TipoStatusCupom = cupom.TipoStatusCupom,
+                DataValidade = cupom.DataValidade,
+                ValorDesconto = cupom.ValorDesconto,
+                QuantidadeLiberada = cupom.QuantidadeLiberada,
+                QuantidadeUsada = cupom.QuantidadeUsada,
+                TipoDesconto = cupom.TipoDesconto
+
+            };
+
+            await _cupomRepository.Adicionar(cupomEntidade);
+
+            var response = new CupomResponse
+            {
+                Descricao = cupomEntidade.Descricao,
+                TipoStatusCupom = cupomEntidade.TipoStatusCupom,
+                DataValidade = cupomEntidade.DataValidade,
+                ValorDesconto = cupomEntidade.ValorDesconto,
+                QuantidadeLiberada = cupomEntidade.QuantidadeLiberada,
+                QuantidadeUsada = cupomEntidade.QuantidadeUsada,
+                TipoDesconto = cupomEntidade.TipoDesconto
+            };
+
+            return response;
         }
-
-        Task ICupomService.CadastrarCupom(Cupom cupomRequest)
+        public async Task<CupomResponse> AtualizarCupom(CupomAtualizarRequest cupom)
         {
-            throw new NotImplementedException();
+            var cupomDb = await _cupomRepository.BuscarPorNome(cupom.Descricao);
+
+            cupomDb.TipoStatusCupom = cupom.TipoStatusCupom;
+            cupomDb.Descricao = cupom.Descricao;
+            cupomDb.DataValidade = cupom.DataValidade;
+            cupomDb.TipoDesconto = cupom.TipoDesconto;
+            cupomDb.QuantidadeLiberada = cupom.QuantidadeLiberada;
+            cupomDb.QuantidadeUsada = cupom.QuantidadeUsada;
+            cupomDb.ValorDesconto = cupom.ValorDesconto;
+
+            await _cupomRepository.Atualizar(cupomDb);
+
+            var response = new CupomResponse
+            {
+                Id = cupomDb.Id,
+                Descricao = cupomDb.Descricao,
+                TipoStatusCupom = cupomDb.TipoStatusCupom,
+                DataValidade = cupomDb.DataValidade,
+                TipoDesconto = cupomDb.TipoDesconto,
+                QuantidadeLiberada = cupomDb.QuantidadeLiberada,
+                QuantidadeUsada = cupomDb.QuantidadeUsada,
+                ValorDesconto = cupomDb.ValorDesconto
+
+            };
+
+            return response;
         }
-
-        Task<bool> ICupomService.DeletarCupom(Guid id)
+        public async Task<bool> DeletarCupom(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            var cupom = await _cupomRepository.ObterPorId(id);
+            if (cupom == null) return false;
 
-        Task ICupomService.ObterCupomPorId(Guid id)
-        {
-            throw new NotImplementedException();
-        }
 
-        Task<bool> ICupomService.UtilizarCupom(string codigoCupom, Guid idUsuario)
-        {
-            throw new NotImplementedException();
+            await _cupomRepository.Remover(id);
+            return true;
         }
     }
 }

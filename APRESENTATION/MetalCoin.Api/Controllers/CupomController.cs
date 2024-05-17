@@ -1,4 +1,5 @@
 ﻿using Metalcoin.Core.Domain;
+using Metalcoin.Core.Dtos.Request;
 using Metalcoin.Core.Interfaces.Repositories;
 using Metalcoin.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace MetalCoin.Api.Controllers
 {
     [ApiController]
-    [Route("cupons")]
     public class CupomController : ControllerBase
     {
         private readonly ICupomRepository _cupomRepository;
@@ -19,7 +19,7 @@ namespace MetalCoin.Api.Controllers
         }
 
         [HttpGet]
-        [Route("todos")]
+        [Route("todoscupom")]
         public async Task<ActionResult<IEnumerable<Cupom>>> ObterTodosCupons()
         {
             var listaCupons = await _cupomRepository.ObterTodos();
@@ -30,7 +30,7 @@ namespace MetalCoin.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{id:guid}")]
+        [Route("idcupom")]
         public async Task<ActionResult<Cupom>> ObterUmCupom(Guid id)
         {
             var cupom = await _cupomRepository.ObterPorId(id);
@@ -39,18 +39,12 @@ namespace MetalCoin.Api.Controllers
         }
 
         [HttpPost]
-        [Route("cadastrar")]
-        public async Task<ActionResult<Cupom>> CadastrarCupom([FromBody] Cupom cupom)
+        [Route("cadastrarcupom")]
+        public async Task<ActionResult<Cupom>> CadastrarCupom(CupomCadastrarRequest cupom)
         {
             if (cupom == null)
                 return BadRequest("Informe os dados do cupom");
-
-            if (string.IsNullOrEmpty(cupom.Codigo) || string.IsNullOrEmpty(cupom.Descricao) || cupom.ValorDesconto == 0 || cupom.DataValidade == DateTime.MinValue || cupom.QuantidadeLiberada == 0)
-                return BadRequest("Todos os campos obrigatórios devem ser fornecidos");
-
-            if (cupom.DataValidade < DateTime.Today)
-                return BadRequest("A data de validade não pode estar no passado");
-
+           
             var response = await _cupomService.CadastrarCupom(cupom);
 
             if (response == null)
@@ -61,8 +55,8 @@ namespace MetalCoin.Api.Controllers
         }
 
         [HttpPut]
-        [Route("atualizar")]
-        public async Task<ActionResult<Cupom>> AtualizarCupom([FromBody] Cupom cupom)
+        [Route("atualizarcupom")]
+        public async Task<ActionResult<Cupom>> AtualizarCupom(CupomAtualizarRequest cupom)
         {
             if (cupom == null) return BadRequest("Nenhum valor chegou na API");
 
@@ -74,7 +68,7 @@ namespace MetalCoin.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("deletar/{id:guid}")]
+        [Route("deletarcupom")]
         public async Task<ActionResult<string>> RemoverCupom(Guid id)
         {
             if (id == Guid.Empty) return BadRequest("Id não informado");
