@@ -1,7 +1,6 @@
 ﻿using Metalcoin.Core.Domain;
 using Metalcoin.Core.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace MetalCoin.Infra.Data.Repositories
 {
